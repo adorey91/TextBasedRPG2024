@@ -4,15 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Security.AccessControl;
 
 namespace TextBasedRPG2024
 {
-    public class Map
+    internal class MapBuild
     {
         public char[,] mapContent;  // holds the map file
         public Player player;
-        public Enemy enemy;
+        public Enemy enemy0;
 
         public Item item1 = new Item();
         public Item item2 = new Item();
@@ -32,9 +31,6 @@ namespace TextBasedRPG2024
                     mapContent[i, j] = lines[i][j];
                 }
             }
-
-            player = new Player();
-            enemy = new Enemy();
         }
 
         public void DrawMap() // uses the map content to draw the map includes player, enemy & items
@@ -45,17 +41,17 @@ namespace TextBasedRPG2024
                 for (int j = 0; j < mapContent.GetLength(1); j++)
                 {
 
-                    if (i == player.posY && j == player.posX)
+                    if (i == player.position.y && j == player.position.x)
                     {
                         Console.Write(player.playerChar);
                     }
-                    else if (i == enemy.posY && j == enemy.posX)
+                    else if (i == enemy0.position.y && j == enemy0.position.x)
                     {
 
-                        if (enemy.healthSystem.health == 0)
+                        if (enemy0.healthSystem.health == 0)
                             return;
                         else
-                            Console.Write(enemy.enemyChar);
+                            Console.Write(enemy0.enemyChar);
                     }
                     //else if (i == item1.posY && j == item1.posX)
                     //{

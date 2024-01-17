@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace TextBasedRPG2024
 {
-    public class HealthSystem
+    internal class HealthSystem
     {
         public int health;
-
-        public HealthSystem(int health)
-        {
-            this.health = health;
-        }
 
         public void TakeDamage(int damage)
         {

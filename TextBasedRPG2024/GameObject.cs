@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace TextBasedRPG2024
 {
-    internal class Item : GameObject
+    internal class GameObject
     {
+        public Point2D position;
 
     }
 }

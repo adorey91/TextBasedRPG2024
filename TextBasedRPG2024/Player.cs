@@ -6,26 +6,23 @@ using System.Threading.Tasks;
 
 namespace TextBasedRPG2024
 {
-    public class Player
+    internal class Player : GameObject
     {
-        public int posX = 5;
-        public int posY = 2;
-
         public char playerChar = 'P';
-
         public HealthSystem healthSystem;
-        public Map map;
+
+        public MapBuild map;
         public Enemy enemy;
+
 
         public Player()
         {
-            healthSystem = new HealthSystem(100);
+            healthSystem = new HealthSystem();
+            healthSystem.health = 100;
         }
 
         public void PlayerMovement()
         {
-            map = new Map();
-
             ConsoleKeyInfo input = Console.ReadKey();
 
             int dirx = 0, diry = 0;
@@ -38,23 +35,23 @@ namespace TextBasedRPG2024
 
             if (dirx != 0 || diry != 0)
             {
-            
-                int newX = posX + dirx;
-                int newY = posY + diry;
+
+                int newX = position.x + dirx;
+                int newY = position.y + diry;
 
                 if (map.checkBoundaries(newX, newY))
                 {
-                    if (newX == enemy.posX && newY == enemy.posY)
+                    if (newX == enemy.position.x && newY == enemy.position.y)
                     {
                         if (enemy.healthSystem.health != 0)
                             enemy.healthSystem.TakeDamage(5);
                         else
                         {
-                            posX = newX;
-                            posY = newY;
-                            
-                            char landedChar = map.mapContent[posY, posX];
-                            
+                            position.x = newX;
+                            position.y = newY;
+
+                            char landedChar = map.mapContent[position.y, position.x];
+
                             if (landedChar == 'V')
                             {
                                 healthSystem.health -= 5;

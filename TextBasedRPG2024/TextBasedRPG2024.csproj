@@ -44,10 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enemy.cs" />
+    <Compile Include="GameObject.cs" />
     <Compile Include="HealthSystem.cs" />
     <Compile Include="Item.cs" />
-    <Compile Include="Map.cs" />
+    <Compile Include="MapBuild.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Point2D.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -55,7 +57,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TextBasedRPG2024\bin\Debug\MapBuild.Txt" />
+    <Content Include="TextBasedRPG2024\bin\Debug\Map.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

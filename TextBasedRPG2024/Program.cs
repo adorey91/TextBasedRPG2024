@@ -8,31 +8,44 @@ namespace TextBasedRPG2024
 {
     internal class Program
     {
-        static Player player;
-        static Enemy enemy;
         static Item item1;
         static Item item2;
-        static Map map = new Map();
+
 
         static void Main(string[] args)
         {
-            player = new Player();
-            enemy = new Enemy();
+            MapBuild mapBuild = new MapBuild();
 
-            map.mapInit();
-            
+            Player player = new Player();
+            Random random = new Random(); // makes sure that the enemies have different health amounts
 
-            while(true)
+            Enemy enemy0 = new Enemy(random);
+            Enemy enemy1 = new Enemy(random);
+
+            enemy0.position.x = 2;
+            enemy0.position.y = 2;
+
+            player.position.x = 4;
+            player.position.y = 4;
+
+
+            mapBuild.mapInit();
+
+            while (true)
             {
                 Console.Clear();
 
                 Console.WriteLine("Text Based RPG 2024");
                 Console.WriteLine();
 
-                map.DrawMap();
-                map.DisplayLegend();
+                mapBuild.DrawMap();
+                mapBuild.DisplayLegend();
+
+               
+
 
                 //player.PlayerMovement();
+                Console.ReadKey(true);
             }
 
             Console.WriteLine();
