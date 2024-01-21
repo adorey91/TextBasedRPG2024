@@ -1,26 +1,23 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TextBasedRPG2024
+namespace Textbased_RPG_AdrianDorey
 {
-    internal class MapBuild
+    internal class BuildMap
     {
-        public char[,] mapContent;  // holds the map file
-        public Player player;
-        public Enemy enemy0;
+        private char[,] mapContent;  // holds the map file
+        private char Player = 'P';
+        private char Enemy = 'E';
+        private char Item = '$';
 
-        public Item item1 = new Item();
-        public Item item2 = new Item();
-
-
+        public char[,] MapContent
+        {
+            get { return mapContent; }
+        }
 
         public void mapInit()   // initializes map from file to mapContent
         {
-            string[] lines = File.ReadAllLines("MapBuild.txt");
+            string[] lines = File.ReadAllLines("Map.txt");
 
             mapContent = new char[lines.Length, lines[0].Length];
 
@@ -33,43 +30,49 @@ namespace TextBasedRPG2024
             }
         }
 
-        public void DrawMap() // uses the map content to draw the map includes player, enemy & items
+        public void DrawMap(Player player, Enemy enemy0, Item money1, Item money2)
         {
-
             for (int i = 0; i < mapContent.GetLength(0); i++)
             {
                 for (int j = 0; j < mapContent.GetLength(1); j++)
                 {
-
-                    if (i == player.position.y && j == player.position.x)
+                    if (i == player.pos.y && j == player.pos.x)
                     {
-                        Console.Write(player.playerChar);
+                        Console.Write(Player);
                     }
-                    else if (i == enemy0.position.y && j == enemy0.position.x)
-                    {
-
-                        if (enemy0.healthSystem.health == 0)
-                            return;
-                        else
-                            Console.Write(enemy0.enemyChar);
-                    }
-                    //else if (i == item1.posY && j == item1.posX)
+                    //else if (i == enemy0.pos.y && j == enemy0.pos.x)
                     //{
-                    //    Console.Write(item1.itemChar);
+                    //    if (enemy0.healthSystem.health > 0) // Check if the enemy is still alive
+                    //    {
+                    //        Console.Write(Enemy);
+                    //    }
+                    //    else
+                    //    {
+                    //        Console.Write(mapContent[i, j]); // Display the original map content if the enemy is dead
+                    //    }
                     //}
-                    //else if (i == item2.posY && j == item2.posX)
+                    //else if (i == money1.pos.y && j == money1.pos.x)
                     //{
-                    //    Console.Write(item2.itemChar);
+                    //    Console.Write(Item);
+                    //}
+                    //else if (i == money2.pos.y && j == money2.pos.x)
+                    //{
+                    //    Console.Write(Item);
                     //}
                     else
                     {
                         MapColor(mapContent[i, j]);
-                        Console.Write(mapContent[i, j]);
-                        Console.ResetColor();
+                    Console.Write(mapContent[i, j]);
+                    Console.ResetColor();
                     }
                 }
                 Console.WriteLine();
             }
+        }
+
+        public bool checkBoundaries(int x, int y) //handles player avoiding boundaries & water
+        {
+            return x >= 0 && x < mapContent.GetLength(1) && y >= 0 && y < mapContent.GetLength(0) && mapContent[y, x] != '#' && mapContent[y, x] != '~';
         }
 
         public void MapColor(char c)    // handles map color
@@ -119,11 +122,6 @@ namespace TextBasedRPG2024
             Console.ResetColor();
             Console.WriteLine(" = Money");
             Console.ResetColor();
-        }
-
-        public bool checkBoundaries(int x, int y) //handles player avoiding boundaries & water
-        {
-            return x >= 0 && x < mapContent.GetLength(1) && y >= 0 && y < mapContent.GetLength(0) && mapContent[y, x] != '#' && mapContent[y, x] != '~';
         }
     }
 }

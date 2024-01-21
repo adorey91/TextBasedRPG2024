@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TextBasedRPG2024;
 
-namespace TextBasedRPG2024
+namespace Textbased_RPG_AdrianDorey
 {
     internal class Enemy : GameObject
     {
         public char enemyChar = 'E';
         public HealthSystem healthSystem;
+
 
         public Enemy(Random random)
         {
@@ -18,7 +20,6 @@ namespace TextBasedRPG2024
             healthSystem.health = randomHealth;
         }
 
-        
+
     }
 }
-

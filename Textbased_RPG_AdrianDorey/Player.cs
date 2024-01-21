@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TextBasedRPG2024;
 
-namespace TextBasedRPG2024
+namespace Textbased_RPG_AdrianDorey
 {
     internal class Player : GameObject
     {
         public char playerChar = 'P';
         public HealthSystem healthSystem;
 
-        public MapBuild map;
-        public Enemy enemy;
+        public BuildMap buildMap;
 
 
         public Player()
@@ -35,29 +35,28 @@ namespace TextBasedRPG2024
 
             if (dirx != 0 || diry != 0)
             {
+                int newX = pos.x + dirx;
+                int newY = pos.y + diry;
 
-                int newX = position.x + dirx;
-                int newY = position.y + diry;
-
-                if (map.checkBoundaries(newX, newY))
+                if (buildMap.checkBoundaries(newX, newY))
                 {
-                    if (newX == enemy.position.x && newY == enemy.position.y)
+                    //if (newX == enemy.pos.x && newY == enemy.pos.y)
+                    //{
+                    //    if (enemy.healthSystem.health != 0)
+                    //        enemy.healthSystem.TakeDamage(5);
+                    //    else
+                    //    {
+                    pos.x = newX;
+                    pos.y = newY;
+
+                    char landedChar = buildMap.MapContent[pos.y, pos.x];
+
+                    if (landedChar == 'V')
                     {
-                        if (enemy.healthSystem.health != 0)
-                            enemy.healthSystem.TakeDamage(5);
-                        else
-                        {
-                            position.x = newX;
-                            position.y = newY;
-
-                            char landedChar = map.mapContent[position.y, position.x];
-
-                            if (landedChar == 'V')
-                            {
-                                healthSystem.health -= 5;
-                            }
-                        }
+                        healthSystem.health -= 5;
                     }
+                    // }
+                    //}
                 }
             }
         }
