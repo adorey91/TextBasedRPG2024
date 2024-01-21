@@ -11,10 +11,9 @@ namespace Textbased_RPG_AdrianDorey
     {
         public char playerChar = 'P';
         public HealthSystem healthSystem;
-
         public BuildMap buildMap;
-
-
+        public Enemy enemy0;
+        
         public Player()
         {
             healthSystem = new HealthSystem();
@@ -40,23 +39,33 @@ namespace Textbased_RPG_AdrianDorey
 
                 if (buildMap.checkBoundaries(newX, newY))
                 {
-                    //if (newX == enemy.pos.x && newY == enemy.pos.y)
-                    //{
-                    //    if (enemy.healthSystem.health != 0)
-                    //        enemy.healthSystem.TakeDamage(5);
-                    //    else
-                    //    {
-                    pos.x = newX;
-                    pos.y = newY;
-
-                    char landedChar = buildMap.MapContent[pos.y, pos.x];
-
-                    if (landedChar == 'V')
+                    if (enemy0.pos.x == newX && enemy0.pos.y == newY)
                     {
-                        healthSystem.health -= 5;
+                        if (enemy0.healthSystem.health != 0)
+                            enemy0.healthSystem.TakeDamage(10);
+
+                        else
+                        {
+                            pos.x = newX;
+                            pos.y = newY;
+
+                            char landedChar = buildMap.MapContent[pos.y, pos.x];
+                            if (landedChar == 'V')
+                                healthSystem.health -= 5;
+                        }
                     }
-                    // }
-                    //}
+
+                    else
+                    {
+                        pos.x = newX;
+                        pos.y = newY;
+
+                        char landedChar = buildMap.MapContent[pos.y, pos.x];
+                        if (landedChar == 'V')
+                        {
+                            healthSystem.health -= 5;
+                        }
+                    }
                 }
             }
         }
