@@ -48,6 +48,7 @@ namespace Textbased_RPG_AdrianDorey
 
                     if (buildMap.checkBoundaries(newX, newY))
                     {
+                        // I really don't like this. FIX
                         if(CheckEnemy(newX, newY))
                         {
                             AttackEnemy(newX, newY);
@@ -57,6 +58,8 @@ namespace Textbased_RPG_AdrianDorey
                             pos.x = newX;
                             pos.y = newY;
 
+
+                            // Revisit, I know theres a better way to do this.
                             money1.TryCollect(newX, newY);
                             money2.TryCollect(newX, newY);
 

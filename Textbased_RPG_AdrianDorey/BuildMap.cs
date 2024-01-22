@@ -65,7 +65,7 @@ namespace Textbased_RPG_AdrianDorey
                     {
                             Console.ForegroundColor = ConsoleColor.Black;
                             Console.BackgroundColor = ConsoleColor.Green;
-                            Console.Write(money1.itemChar);
+                            Console.Write(money1.moneyChar);
                             Console.ResetColor();
                     }
 
@@ -73,7 +73,7 @@ namespace Textbased_RPG_AdrianDorey
                     {
                             Console.ForegroundColor = ConsoleColor.Black;
                             Console.BackgroundColor = ConsoleColor.Green;
-                            Console.Write(money2.itemChar);
+                            Console.Write(money2.moneyChar);
                             Console.ResetColor();
                     }
                     

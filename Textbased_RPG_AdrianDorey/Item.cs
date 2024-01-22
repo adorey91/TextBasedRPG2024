@@ -5,7 +5,8 @@ namespace Textbased_RPG_AdrianDorey
     internal class Item : GameObject
     {
         public bool collected;
-        public char itemChar = '$';
+        public char moneyChar = '$';
+        public char potionChar = 'H';
 
         public Item()
         {
