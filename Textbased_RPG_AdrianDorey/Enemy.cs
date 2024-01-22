@@ -31,7 +31,6 @@ namespace Textbased_RPG_AdrianDorey
         {
             if (healthSystem.health != 0)
             {
-
                 int Direction = randomMovement.Next(0, 4); // random number between 0 & 3
 
                 int dx = 0;
@@ -70,8 +69,10 @@ namespace Textbased_RPG_AdrianDorey
                         pos.x = newEnemyX;
                         pos.y = newEnemyY;
 
+
                         char landedChar = buildMap.MapContent[pos.y, pos.x];
-                        if (landedChar == 'V')
+
+                        if (landedChar == 'P')
                         {
                             healthSystem.health -= 5;
                         }

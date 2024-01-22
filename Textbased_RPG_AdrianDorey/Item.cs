@@ -12,13 +12,11 @@ namespace Textbased_RPG_AdrianDorey
             collected = false;
         }
 
-        public void TryCollect(Player player)
+        public void TryCollect(int posX, int posY)
         {
-            if (pos.y == player.pos.y && pos.x == player.pos.x)
+            if (pos.y == posY && pos.x == posX)
             {
                 collected = true;
-                // Optionally, you may want to perform additional actions when money is collected.
-                // For example, updating the player's score or inventory.
             }
         }
     }

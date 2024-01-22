@@ -26,27 +26,30 @@ namespace Textbased_RPG_AdrianDorey
 
             
             enemy0.pos.x = 2;
-            enemy0.pos.y = 2;
-            //enemy1.pos.x = 8;
-            //enemy1.pos.y = 15;
+            enemy0.pos.y = 10;
+            enemy1.pos.x = 8;
+            enemy1.pos.y = 15;
             player.pos.x = 4;
             player.pos.y = 4;
             money1.pos.x = 4;
-            money1.pos.y = 2;
-            money2.pos.x = 2;
-            money2.pos.y = 4;
+            money1.pos.y = 6;
+            money2.pos.x = 28;
+            money2.pos.y = 15;
 
 
             buildMap.mapInit();
 
             player.buildMap = buildMap;
             player.enemy0 = enemy0;
+            player.enemy1 = enemy1;
             enemy0.buildMap = buildMap;
             enemy1.buildMap = buildMap;
             enemy0.player = player;
             enemy1.player = player;
+            player.money1 = money1;
+            player.money2 = money2;
 
-            while (true)
+            while (!player.gameOver)
             {
                 WriteTitle();
                 ShowHUD();
@@ -56,10 +59,11 @@ namespace Textbased_RPG_AdrianDorey
 
                 player.PlayerMovement();
                 enemy0.EnemyMovement();
-
-                money1.TryCollect(player);
-                money2.TryCollect(player);
+                enemy1.EnemyMovement();
             }
+
+            Console.WriteLine("Player has died, press any key to exit");
+            Console.ReadKey();
         }
 
         static void ShowHUD()   // handles hud output

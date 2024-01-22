@@ -1,12 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using TextBasedRPG2024;
 
 namespace Textbased_RPG_AdrianDorey
 {
     internal class BuildMap
     {
         private char[,] mapContent;  // holds the map file
+       
 
         public char[,] MapContent
         {
@@ -37,38 +39,42 @@ namespace Textbased_RPG_AdrianDorey
                     if (i == player.pos.y && j == player.pos.x)
                     {
                         Console.Write(player.playerChar);
+
+                        
                     }
 
-                    else if (i == enemy0.pos.y && j == enemy0.pos.x)
+                    else if (i == enemy0.pos.y && j == enemy0.pos.x && enemy0.healthSystem.health > 0)
                     {
-                        if (enemy0.healthSystem.health > 0) // Check if the enemy is still alive
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.Write(enemy0.enemyChar);
-                        else
-                            Console.Write(mapContent[i, j]);
+                            Console.ResetColor();
+
+                        
                     }
 
-                    //else if (i == enemy1.pos.y && j == enemy1.pos.x)
-                    //{
-                    //    if (enemy0.healthSystem.health > 0) // Check if the enemy is still alive
-                    //        Console.Write(enemy0.enemyChar);
-                    //    else
-                    //        Console.Write(mapContent[i, j]);
-                    //}
-
-                    else if (i == money1.pos.y && j == money1.pos.x)
+                    else if (i == enemy1.pos.y && j == enemy1.pos.x && enemy1.healthSystem.health > 0)
                     {
-                        if (!money1.collected)
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write(enemy1.enemyChar);
+                            Console.ResetColor();
+
+                        
+                    }
+
+                    else if (i == money1.pos.y && j == money1.pos.x && !money1.collected)
+                    {
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            Console.BackgroundColor = ConsoleColor.Green;
                             Console.Write(money1.itemChar);
-                        else
-                            Console.Write(mapContent[i, j]);
+                            Console.ResetColor();
                     }
 
-                    else if (i == money2.pos.y && j == money2.pos.x)
+                    else if (i == money2.pos.y && j == money2.pos.x && !money2.collected)
                     {
-                        if (!money2.collected)
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            Console.BackgroundColor = ConsoleColor.Green;
                             Console.Write(money2.itemChar);
-                        else
-                            Console.Write(mapContent[i, j]);
+                            Console.ResetColor();
                     }
                     
                     else
@@ -88,6 +94,8 @@ namespace Textbased_RPG_AdrianDorey
             return x >= 0 && x < mapContent.GetLength(1) && y >= 0 && y < mapContent.GetLength(0) && mapContent[y, x] != '#' && mapContent[y, x] != '~';
         }
 
+        
+
         public void MapColor(char c)    // handles map color
         {
             switch (c)
@@ -96,9 +104,9 @@ namespace Textbased_RPG_AdrianDorey
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                     Console.BackgroundColor = ConsoleColor.DarkGray;
                     break;
-                case 'V':
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.BackgroundColor = ConsoleColor.Red;
+                case 'P':
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.BackgroundColor = ConsoleColor.Green;
                     break;
                 case '~':
                     Console.ForegroundColor = ConsoleColor.Blue;
@@ -120,10 +128,10 @@ namespace Textbased_RPG_AdrianDorey
             Console.ResetColor();
             Console.WriteLine(" = Walls");
 
-            MapColor('V');
-            Console.Write("V");
+            MapColor('P');
+            Console.Write("P");
             Console.ResetColor();
-            Console.WriteLine(" = Lava");
+            Console.WriteLine(" = Poison Spill");
 
             MapColor('~');
             Console.Write("~");
