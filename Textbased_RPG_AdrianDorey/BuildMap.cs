@@ -83,11 +83,15 @@ namespace Textbased_RPG_AdrianDorey
             Console.WriteLine();
         }
 
-        public bool checkBoundaries(int x, int y) //handles player avoiding boundaries & water
+        public bool CheckBoundaries(int x, int y) //handles player avoiding boundaries & water
         {
             return x >= 0 && x < mapContent.GetLength(1) && y >= 0 && y < mapContent.GetLength(0) && mapContent[y, x] != '#' && mapContent[y, x] != '~';
         }
 
+        public bool CheckFloor(int x, int y)
+        {
+            return mapContent[y, x] == 'P';
+        }
 
         public void MapColor(char c)    // handles map color
         {

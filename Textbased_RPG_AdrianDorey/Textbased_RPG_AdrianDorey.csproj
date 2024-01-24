@@ -60,8 +60,10 @@
   <ItemGroup>
     <Compile Include="BuildMap.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="GameLog.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="HealthSystem.cs" />
+    <Compile Include="HUD.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Point2D.cs" />

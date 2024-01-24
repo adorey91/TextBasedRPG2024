@@ -40,26 +40,22 @@ namespace Textbased_RPG_AdrianDorey
                 else if (input.Key == ConsoleKey.S || input.Key == ConsoleKey.DownArrow) diry = 1;
                 else if (input.Key == ConsoleKey.A || input.Key == ConsoleKey.LeftArrow) dirx = -1;
                 else if (input.Key == ConsoleKey.D || input.Key == ConsoleKey.RightArrow) dirx = 1;
-                else if (input.Key == ConsoleKey.Spacebar) return;
+                else if (input.Key == ConsoleKey.Spacebar) return; // using for testing, player doesn't move
 
                 if (dirx != 0 || diry != 0)
                 {
                     int newX = pos.x + dirx;
                     int newY = pos.y + diry;
 
-                    if (buildMap.checkBoundaries(newX, newY))
+                    if (buildMap.CheckBoundaries(newX, newY))
                     {
-                        // I really don't like this. FIX
                         if(CheckEnemy(newX, newY))
-                        {
                             AttackEnemy();
-                        }
                         else
                         {
                             pos.x = newX;
                             pos.y = newY;
 
-                            // Revisit, I know theres a better way to do this.
                             money1.TryCollect(newX, newY);
                             money2.TryCollect(newX, newY);
                             potion.TryCollect(newX, newY);
@@ -67,12 +63,8 @@ namespace Textbased_RPG_AdrianDorey
                             if (potion.pickedUp)
                                 healthSystem.Heal(5);
 
-                            char landedChar = buildMap.MapContent[pos.y, pos.x];
-
-                            if (landedChar == 'P')
-                            {
-                                healthSystem.health -= 5;
-                            }
+                            if (buildMap.CheckFloor(newX, newY))
+                                healthSystem.TakeDamage(5);
                         }
                     }
                 }
@@ -87,30 +79,6 @@ namespace Textbased_RPG_AdrianDorey
         void AttackEnemy()
         {
             enemy.healthSystem.TakeDamage(10);
-        }
-
-        public void LogAttackText()
-        {
-            if(enemy.healthSystem.attacked)
-            {
-                Console.WriteLine("Player attacked enemy");
-                enemy.healthSystem.attacked = false;
-            }
-        }
-
-        public void LogPickUpText()
-        {
-            if (money1.pickedUp || money2.pickedUp)
-            {
-                Console.WriteLine("Player picked up money");
-                money1.pickedUp = false;
-                money2.pickedUp = false;
-            }
-            else if(potion.pickedUp)
-            {
-                Console.WriteLine("Player picked up potion, healed 5");
-                potion.pickedUp = false;
-            }
         }
     }
 }

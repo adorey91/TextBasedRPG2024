@@ -5,8 +5,8 @@ namespace Textbased_RPG_AdrianDorey
 {
     internal class Item : GameObject
     {
-        public bool collected;
-        public bool pickedUp;
+        public bool collected;  // used for the HUD
+        public bool pickedUp;   // used for the game log
         public char moneyChar = '$';
         public char potionChar = 'H';
 

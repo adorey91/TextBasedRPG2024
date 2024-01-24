@@ -17,6 +17,8 @@ namespace Textbased_RPG_AdrianDorey
         static Item money1 = new Item();
         static Item money2 = new Item();
         static Item potion = new Item();
+        static HUD HUD = new HUD();
+        static GameLog log = new GameLog();
 
 
         static void Main(string[] args)
@@ -45,6 +47,15 @@ namespace Textbased_RPG_AdrianDorey
             player.potion = potion;
             enemy.buildMap = buildMap;
             enemy.player = player;
+            HUD.enemy = enemy;
+            HUD.player = player;
+            HUD.money1 = money1;
+            HUD.money2 = money2;
+            log.money1 = money1;
+            log.money2 = money2;    
+            log.player = player;
+            log.enemy = enemy;
+            log.potion = potion;
 
             while (!player.gameOver)
             {
@@ -52,12 +63,12 @@ namespace Textbased_RPG_AdrianDorey
                     player.gameOver = true;
                 
                 WriteTitle();
-                ShowHUD();
+                HUD.ShowHUD();
 
                 buildMap.DrawMap(player, enemy, money1, money2, potion);
                 buildMap.DisplayLegend();
 
-                PrintGameLog();
+                log.PrintGameLog();
 
                 player.PlayerMovement();
                 enemy.EnemyMovement();
@@ -66,46 +77,8 @@ namespace Textbased_RPG_AdrianDorey
             if (player.healthSystem.health == 0)
                 Console.WriteLine("Player has died, press any key to exit");
             else
-                Console.WriteLine("Player has won!");
+                Console.WriteLine("Player has won! Press any key to exit");
             Console.ReadKey();
-        }
-
-        static void PrintGameLog()
-        {
-            Console.WriteLine();
-            Console.WriteLine("Game Log:");
-            player.LogAttackText();
-            player.LogPickUpText();
-            enemy.LogAttackText();
-            enemy.LogEnemyDeathText();
-            Console.WriteLine();
-        }
-
-        static void ShowHUD()   // handles hud output
-        {
-            Console.WriteLine("Player Health: " + player.healthSystem.health);
-            Console.WriteLine("Enemy0 Health: " + enemy.healthSystem.health);
-            Console.Write("Item Picked Up: ");
-
-            if (money1.collected == true)
-            {
-                Console.BackgroundColor = ConsoleColor.Green;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write(money1.moneyChar);
-                Console.ResetColor();
-            }
-
-            Console.Write(' ');
-
-            if(money2.collected  == true)
-            {
-                Console.BackgroundColor = ConsoleColor.Green;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write(money2.moneyChar);
-                Console.ResetColor();
-            }
-            Console.WriteLine();
-            Console.WriteLine();
         }
 
         static void WriteTitle()

@@ -28,24 +28,6 @@ namespace Textbased_RPG_AdrianDorey
             player.healthSystem.TakeDamage(10);
         }
 
-        public void LogAttackText()
-        {
-            if (player.healthSystem.attacked)
-            {
-                Console.WriteLine("Enemy attacked player");
-                player.healthSystem.attacked = false;
-            }
-        }
-
-        public void LogEnemyDeathText()
-        {
-            if (healthSystem.dead)
-            {
-                Console.WriteLine("Enemy died");
-                healthSystem.dead = false;
-            }
-        }
-
         public void EnemyMovement()
         {
             if (healthSystem.health != 0)
@@ -65,7 +47,7 @@ namespace Textbased_RPG_AdrianDorey
                     int newEnemyX = pos.x + dx;
                     int newEnemyY = pos.y + dy;
 
-                    while (!buildMap.checkBoundaries(newEnemyX, newEnemyY))
+                    while (!buildMap.CheckBoundaries(newEnemyX, newEnemyY))
                     {
                         Direction = randomMovement.Next(0, 3);
 
@@ -87,12 +69,8 @@ namespace Textbased_RPG_AdrianDorey
                         pos.x = newEnemyX;
                         pos.y = newEnemyY;
 
-                        char landedChar = buildMap.MapContent[pos.y, pos.x];
-
-                        if (landedChar == 'P')
-                        {
-                            healthSystem.health -= 5;
-                        }
+                        if (buildMap.CheckFloor(newEnemyX, newEnemyY))
+                            healthSystem.TakeDamage(5);
                     }
                 }
             }

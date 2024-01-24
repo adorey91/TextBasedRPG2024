@@ -21,7 +21,8 @@ namespace Textbased_RPG_AdrianDorey
                 health = 0;
                 dead = true;
             }
-            attacked = true;
+            if(damage == 10)
+                attacked = true;
         }
 
         public void Heal(int hp)
