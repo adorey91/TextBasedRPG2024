@@ -9,35 +9,20 @@ namespace Textbased_RPG_AdrianDorey
 {
     internal class Program
     {
-        static Player player = new Player();
-        static Random random = new Random(); // makes sure that the enemies have different health amounts
-
-        static Enemy enemy = new Enemy(random);
-
-        static Item money1 = new Item();
-        static Item money2 = new Item();
-        static Item potion = new Item();
-        static HUD HUD = new HUD();
-        static GameLog log = new GameLog();
-
-
         static void Main(string[] args)
         {
+            Player player = new Player();
+            Random random = new Random(); // makes sure that the enemies have different health amounts
+            Enemy enemy = new Enemy(random);
+            Item money1 = new Item();
+            Item money2 = new Item();
+            Item potion = new Item();
+            HUD HUD = new HUD();
+            GameLog log = new GameLog();
+ 
             Console.CursorVisible = false;
             BuildMap buildMap = new BuildMap();
             buildMap.mapInit();
-
-            //positions of GameObjects
-            enemy.pos.x = 2;
-            enemy.pos.y = 15;
-            player.pos.x = 4;
-            player.pos.y = 4;
-            money1.pos.x = 4;
-            money1.pos.y = 6;
-            money2.pos.x = 28;
-            money2.pos.y = 15;
-            potion.pos.x = 25;
-            potion.pos.y = 4;
 
             //Initializing
             player.buildMap = buildMap;
@@ -57,6 +42,19 @@ namespace Textbased_RPG_AdrianDorey
             log.enemy = enemy;
             log.potion = potion;
 
+            //positions of GameObjects
+            enemy.pos.x = 30;
+            enemy.pos.y = 10;
+            player.pos.x = 4;
+            player.pos.y = 4;
+            money1.pos.x = 6;
+            money1.pos.y = 8;
+            money2.pos.x = 30;
+            money2.pos.y = 18;
+            potion.pos.x = 25;
+            potion.pos.y = 4;
+
+
             while (!player.gameOver)
             {
                 if (enemy.healthSystem.health == 0 && money1.collected && money2.collected)
@@ -64,16 +62,13 @@ namespace Textbased_RPG_AdrianDorey
                 
                 WriteTitle();
                 HUD.ShowHUD();
-
                 buildMap.DrawMap(player, enemy, money1, money2, potion);
                 buildMap.DisplayLegend();
-
                 log.PrintGameLog();
-
                 player.PlayerMovement();
                 enemy.EnemyMovement();
-
             }
+
             if (player.healthSystem.health == 0)
                 Console.WriteLine("Player has died, press any key to exit");
             else

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using TextBasedRPG2024;
 
 namespace Textbased_RPG_AdrianDorey
@@ -14,12 +15,11 @@ namespace Textbased_RPG_AdrianDorey
         {
             collected = false;
             pickedUp = false;
-
         }
 
         public void TryCollect(int posX, int posY)
         {
-            if (pos.y == posY && pos.x == posX)
+            if (pos.y == posY && pos.x == posX && !collected)
             {
                 collected = true;
                 pickedUp = true;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Textbased_RPG_AdrianDorey
 {
@@ -13,7 +14,7 @@ namespace Textbased_RPG_AdrianDorey
         public Item money1;
         public Item money2;
         public Item potion;
-
+      
         public void PrintGameLog()
         {
             Console.WriteLine();

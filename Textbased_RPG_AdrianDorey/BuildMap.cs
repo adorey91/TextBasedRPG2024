@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using TextBasedRPG2024;
@@ -8,7 +9,6 @@ namespace Textbased_RPG_AdrianDorey
     internal class BuildMap
     {
         private char[,] mapContent;  // holds the map file
-       
 
         public char[,] MapContent
         {
@@ -131,31 +131,10 @@ namespace Textbased_RPG_AdrianDorey
         {
             Console.WriteLine("Map Legend:");
 
-            MapColor('#');
-            Console.Write("#");
+            MapColor('H');
+            Console.Write("H");
             Console.ResetColor();
-            Console.WriteLine(" = Walls");
-
-            MapColor('P');
-            Console.Write("P");
-            Console.ResetColor();
-            Console.WriteLine(" = Poison Spill");
-
-            MapColor('~');
-            Console.Write("~");
-            Console.ResetColor();
-            Console.WriteLine(" = Deep Water");
-
-            MapColor('L');
-            Console.Write("L");
-            Console.ResetColor();
-            Console.WriteLine(" = Potion");
-            Console.ResetColor();
-
-            MapColor('$');
-            Console.Write("$");
-            Console.ResetColor();
-            Console.WriteLine(" = Money");
+            Console.WriteLine(" = Hero (Player)");
             Console.ResetColor();
 
             MapColor('E');
@@ -164,11 +143,32 @@ namespace Textbased_RPG_AdrianDorey
             Console.WriteLine(" = Enemy");
             Console.ResetColor();
 
-            MapColor('H');
-            Console.Write("H");
+            MapColor('$');
+            Console.Write("$");
             Console.ResetColor();
-            Console.WriteLine(" = Hero (Player)");
+            Console.WriteLine(" = Money");
             Console.ResetColor();
+
+            MapColor('L');
+            Console.Write("L");
+            Console.ResetColor();
+            Console.WriteLine(" = Potion");
+            Console.ResetColor();
+
+            MapColor('~');
+            Console.Write("~");
+            Console.ResetColor();
+            Console.WriteLine(" = Deep Water");
+
+            MapColor('P');
+            Console.Write("P");
+            Console.ResetColor();
+            Console.WriteLine(" = Poison Spill");
+
+            MapColor('#');
+            Console.Write("#");
+            Console.ResetColor();
+            Console.WriteLine(" = Walls");
         }
     }
 }

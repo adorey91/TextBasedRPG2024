@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace Textbased_RPG_AdrianDorey
         public Item money1;
         public Item money2;
 
-        public void ShowHUD()   // handles hud output
+            public void ShowHUD()   // handles hud output
         {
             Console.WriteLine("Player Health: " + player.healthSystem.health);
             Console.WriteLine("Enemy0 Health: " + enemy.healthSystem.health);
