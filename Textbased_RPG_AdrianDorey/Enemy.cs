@@ -15,6 +15,7 @@ namespace Textbased_RPG_AdrianDorey
         public BuildMap buildMap;
         public Player player;
 
+
         public Enemy(Random random)
         {
             healthSystem = new HealthSystem();
@@ -25,6 +26,24 @@ namespace Textbased_RPG_AdrianDorey
         public void AttackPlayer()
         {
             player.healthSystem.TakeDamage(10);
+        }
+
+        public void LogAttackText()
+        {
+            if (player.healthSystem.attacked)
+            {
+                Console.WriteLine("Enemy attacked player");
+                player.healthSystem.attacked = false;
+            }
+        }
+
+        public void LogEnemyDeathText()
+        {
+            if (healthSystem.dead)
+            {
+                Console.WriteLine("Enemy died");
+                healthSystem.dead = false;
+            }
         }
 
         public void EnemyMovement()
@@ -61,14 +80,12 @@ namespace Textbased_RPG_AdrianDorey
                         newEnemyX = pos.x + dx;
                         newEnemyY = pos.y + dy;
                     }
-
                     if (newEnemyX == player.pos.x && newEnemyY == player.pos.y)
-                        player.healthSystem.TakeDamage(10);
+                        AttackPlayer();
                     else
                     {
                         pos.x = newEnemyX;
                         pos.y = newEnemyY;
-
 
                         char landedChar = buildMap.MapContent[pos.y, pos.x];
 

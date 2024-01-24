@@ -1,16 +1,20 @@
-﻿using TextBasedRPG2024;
+﻿using System;
+using TextBasedRPG2024;
 
 namespace Textbased_RPG_AdrianDorey
 {
     internal class Item : GameObject
     {
         public bool collected;
+        public bool pickedUp;
         public char moneyChar = '$';
         public char potionChar = 'H';
 
         public Item()
         {
             collected = false;
+            pickedUp = false;
+
         }
 
         public void TryCollect(int posX, int posY)
@@ -18,6 +22,7 @@ namespace Textbased_RPG_AdrianDorey
             if (pos.y == posY && pos.x == posX)
             {
                 collected = true;
+                pickedUp = true;
             }
         }
     }

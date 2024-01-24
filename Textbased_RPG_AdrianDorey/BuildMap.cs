@@ -30,7 +30,7 @@ namespace Textbased_RPG_AdrianDorey
             }
         }
 
-        public void DrawMap(Player player, Enemy enemy0, Enemy enemy1, Item money1, Item money2)
+        public void DrawMap(Player player, Enemy enemy, Item money1, Item money2, Item potion)
         {
             for (int i = 0; i < mapContent.GetLength(0); i++)
             {
@@ -38,45 +38,39 @@ namespace Textbased_RPG_AdrianDorey
                 {
                     if (i == player.pos.y && j == player.pos.x)
                     {
+                        MapColor('H');
                         Console.Write(player.playerChar);
-
-                        
+                        Console.ResetColor();
                     }
 
-                    else if (i == enemy0.pos.y && j == enemy0.pos.x && enemy0.healthSystem.health > 0)
+                    else if (i == enemy.pos.y && j == enemy.pos.x && enemy.healthSystem.health > 0)
                     {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write(enemy0.enemyChar);
-                            Console.ResetColor();
-
-                        
+                        MapColor('E');
+                        Console.Write(enemy.enemyChar);
+                        Console.ResetColor();
                     }
-
-                    else if (i == enemy1.pos.y && j == enemy1.pos.x && enemy1.healthSystem.health > 0)
-                    {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write(enemy1.enemyChar);
-                            Console.ResetColor();
-
-                        
-                    }
-
+                    
                     else if (i == money1.pos.y && j == money1.pos.x && !money1.collected)
                     {
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            Console.BackgroundColor = ConsoleColor.Green;
-                            Console.Write(money1.moneyChar);
-                            Console.ResetColor();
+                        MapColor('$');
+                        Console.Write(money1.moneyChar);
+                        Console.ResetColor();
                     }
 
                     else if (i == money2.pos.y && j == money2.pos.x && !money2.collected)
                     {
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            Console.BackgroundColor = ConsoleColor.Green;
-                            Console.Write(money2.moneyChar);
-                            Console.ResetColor();
+                        MapColor('$');
+                        Console.Write(money2.moneyChar);
+                        Console.ResetColor();
                     }
-                    
+
+                    else if (i == potion.pos.y && j == potion.pos.x && !potion.collected)
+                    {
+                        MapColor('L');
+                        Console.Write(potion.potionChar);
+                        Console.ResetColor();
+                    }
+
                     else
                     {
                         MapColor(mapContent[i, j]);
@@ -94,7 +88,6 @@ namespace Textbased_RPG_AdrianDorey
             return x >= 0 && x < mapContent.GetLength(1) && y >= 0 && y < mapContent.GetLength(0) && mapContent[y, x] != '#' && mapContent[y, x] != '~';
         }
 
-        
 
         public void MapColor(char c)    // handles map color
         {
@@ -106,7 +99,7 @@ namespace Textbased_RPG_AdrianDorey
                     break;
                 case 'P':
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.BackgroundColor = ConsoleColor.DarkGreen;
                     break;
                 case '~':
                     Console.ForegroundColor = ConsoleColor.Blue;
@@ -115,6 +108,17 @@ namespace Textbased_RPG_AdrianDorey
                 case '$':
                     Console.ForegroundColor = ConsoleColor.Black;
                     Console.BackgroundColor = ConsoleColor.Green;
+                    break;
+                case 'E':
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    break;
+                case 'H':
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
+                case 'L':
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Red;
                     break;
             }
         }
@@ -138,10 +142,28 @@ namespace Textbased_RPG_AdrianDorey
             Console.ResetColor();
             Console.WriteLine(" = Deep Water");
 
+            MapColor('L');
+            Console.Write("L");
+            Console.ResetColor();
+            Console.WriteLine(" = Potion");
+            Console.ResetColor();
+
             MapColor('$');
             Console.Write("$");
             Console.ResetColor();
             Console.WriteLine(" = Money");
+            Console.ResetColor();
+
+            MapColor('E');
+            Console.Write("E");
+            Console.ResetColor();
+            Console.WriteLine(" = Enemy");
+            Console.ResetColor();
+
+            MapColor('H');
+            Console.Write("H");
+            Console.ResetColor();
+            Console.WriteLine(" = Hero (Player)");
             Console.ResetColor();
         }
     }
