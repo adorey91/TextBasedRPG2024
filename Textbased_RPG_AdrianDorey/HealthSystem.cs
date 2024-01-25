@@ -11,6 +11,12 @@ namespace Textbased_RPG_AdrianDorey
         public int health;
         public bool attacked;
         public bool dead;
+        public Item potion;
+
+        public void Init(Item potion)
+        {
+            this.potion = potion;
+        }
 
         public void TakeDamage(int damage)
         {
@@ -28,6 +34,8 @@ namespace Textbased_RPG_AdrianDorey
         public void Heal(int hp)
         {
             health += hp;
+            if (hp >= 100)
+                health = 100;
         }
     }
 }

@@ -14,7 +14,15 @@ namespace Textbased_RPG_AdrianDorey
         public Item money1;
         public Item money2;
 
-            public void ShowHUD()   // handles hud output
+        public void Init(Player player, Enemy enemy, Item money1, Item money2)
+        {
+            this.player = player;
+            this.enemy = enemy;
+            this.money1 = money1;
+            this.money2 = money2;
+        }
+        
+        public void ShowHUD()   // handles hud output
         {
             Console.WriteLine("Player Health: " + player.healthSystem.health);
             Console.WriteLine("Enemy0 Health: " + enemy.healthSystem.health);

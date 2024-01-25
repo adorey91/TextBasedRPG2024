@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using TextBasedRPG2024;
 
 namespace Textbased_RPG_AdrianDorey
 {
@@ -19,41 +20,25 @@ namespace Textbased_RPG_AdrianDorey
             Item potion = new Item();
             HUD HUD = new HUD();
             GameLog log = new GameLog();
+            HealthSystem healthSystem = new HealthSystem();
  
             Console.CursorVisible = false;
             BuildMap buildMap = new BuildMap();
             buildMap.mapInit();
 
             //Initializing
-            player.buildMap = buildMap;
-            player.enemy = enemy;
-            player.money1 = money1;
-            player.money2 = money2;
-            player.potion = potion;
-            enemy.buildMap = buildMap;
-            enemy.player = player;
-            HUD.enemy = enemy;
-            HUD.player = player;
-            HUD.money1 = money1;
-            HUD.money2 = money2;
-            log.money1 = money1;
-            log.money2 = money2;    
-            log.player = player;
-            log.enemy = enemy;
-            log.potion = potion;
+            player.Init(buildMap, enemy, money1, money2, potion);
+            enemy.Init(buildMap, player, potion);
+            HUD.Init(player, enemy, money1, money2);
+            log.Init(player, enemy, money1, money2, potion);
 
             //positions of GameObjects
-            enemy.pos.x = 30;
-            enemy.pos.y = 10;
-            player.pos.x = 4;
-            player.pos.y = 4;
-            money1.pos.x = 6;
-            money1.pos.y = 8;
-            money2.pos.x = 30;
-            money2.pos.y = 18;
-            potion.pos.x = 25;
-            potion.pos.y = 4;
-
+            player.pos = new Point2D { x = 4, y = 4 };
+            enemy.pos = new Point2D { x = 30, y = 10 };
+            money1.pos = new Point2D { x = 6, y = 8 };
+            money2.pos = new Point2D { x = 30, y = 18 };
+            potion.pos = new Point2D { x = 25, y = 4 };
+            
 
             while (!player.gameOver)
             {
@@ -67,6 +52,7 @@ namespace Textbased_RPG_AdrianDorey
                 log.PrintGameLog();
                 player.PlayerMovement();
                 enemy.EnemyMovement();
+                
             }
 
             if (player.healthSystem.health == 0)

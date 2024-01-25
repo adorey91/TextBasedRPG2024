@@ -14,7 +14,16 @@ namespace Textbased_RPG_AdrianDorey
         public Item money1;
         public Item money2;
         public Item potion;
-      
+
+        public void Init(Player player, Enemy enemy, Item money1, Item money2, Item potion)
+        {
+            this.player = player;
+            this.enemy = enemy;
+            this.money1 = money1;
+            this.money2 = money2;
+            this.potion = potion;
+        }
+
         public void PrintGameLog()
         {
             Console.WriteLine();
@@ -49,7 +58,10 @@ namespace Textbased_RPG_AdrianDorey
             }
             else if (potion.pickedUp)
             {
-                Console.WriteLine("Player picked up potion, healed 5");
+                if (player.healthSystem.health >= 100)
+                    Console.WriteLine("Player cannot heal anymore");
+                else
+                    Console.WriteLine("Player picked up potion, healed " + player.healAmount);
                 potion.pickedUp = false;
             }
         }

@@ -15,12 +15,22 @@ namespace Textbased_RPG_AdrianDorey
         public BuildMap buildMap;
         public Player player;
 
+        private int dx;
+        private int dy;
+        private int newX;
+        private int newY;
 
         public Enemy(Random random)
         {
             healthSystem = new HealthSystem();
             int randomHealth = random.Next(40, 65);
             healthSystem.health = randomHealth;
+        }
+
+        public void Init(BuildMap buildMap, Player player, Item potion)
+        {
+            this.buildMap = buildMap;
+            this.player = player;
         }
 
         public void AttackPlayer()
@@ -36,69 +46,51 @@ namespace Textbased_RPG_AdrianDorey
 
                 if (playerDistance <= 6) //checks if the player is within 6 places
                 {
-                    int dx = Math.Sign(player.pos.x - pos.x);
-                    int dy = Math.Sign(player.pos.y - pos.y);
+                    dx = Math.Sign(player.pos.x - pos.x);
+                    dy = Math.Sign(player.pos.y - pos.y);
 
-                    int newEnemyX = pos.x + dx;
-                    int newEnemyY = pos.y + dy;
+                    newX = pos.x + dx;
+                    newY = pos.y + dy;
 
-                    if (buildMap.CheckBoundaries(newEnemyX, newEnemyY))
+                    if (buildMap.CheckBoundaries(newX, newY))
                     {
-                        if (newEnemyX == player.pos.x && newEnemyY == player.pos.y)
+                        if (newX == player.pos.x && newY == player.pos.y)
                             AttackPlayer();
                         else
                         {
-                            pos.x = newEnemyX;
-                            pos.y = newEnemyY;
-
-                            if (buildMap.CheckFloor(newEnemyX, newEnemyY))
-                                healthSystem.TakeDamage(5);
+                            pos.x = newX;
+                            pos.y = newY;
                         }
                     }
                 }
                 else // randomly moves
                 {
-                    int Direction = randomMovement.Next(0, 4);
-                    int dx = 0;
-                    int dy = 0;
+                    int direction = randomMovement.Next(0, 4);
+                    int dx = (direction == 2) ? 1 : (direction == 3) ? -1 : 0;
+                    int dy = (direction == 0) ? 1 : (direction == 1) ? -1 : 0;
 
-                    if (Direction == 0) dy = 1;
-                    else if (Direction == 1) dy = -1;
-                    else if (Direction == 2) dx = 1;
-                    else if (Direction == 3) dx = -1;
+                    int newX = pos.x + dx;
+                    int newY = pos.y + dy;
 
-                    if (dx != 0 || dy != 0)
+                    while (!buildMap.CheckBoundaries(newX, newY))
                     {
-                        int newEnemyX = pos.x + dx;
-                        int newEnemyY = pos.y + dy;
+                        direction = randomMovement.Next(0, 4);
+                        dx = (direction == 2) ? 1 : (direction == 3) ? -1 : 0;
+                        dy = (direction == 0) ? 1 : (direction == 1) ? -1 : 0;
 
-                        while (!buildMap.CheckBoundaries(newEnemyX, newEnemyY))
-                        {
-                            Direction = randomMovement.Next(0, 3);
-
-                            dx = 0;
-                            dy = 0;
-
-                            if (Direction == 0) dy = 1;
-                            else if (Direction == 1) dy = -1;
-                            else if (Direction == 2) dx = 1;
-                            else if (Direction == 3) dx = -1;
-
-                            newEnemyX = pos.x + dx;
-                            newEnemyY = pos.y + dy;
-                        }
-                        if (newEnemyX == player.pos.x && newEnemyY == player.pos.y)
+                        newX = pos.x + dx;
+                        newY = pos.y + dy;
+                    }
+                    if (newX == player.pos.x && newY == player.pos.y)
                             AttackPlayer();
-                        else
-                        {
-                            pos.x = newEnemyX;
-                            pos.y = newEnemyY;
-
-                            if (buildMap.CheckFloor(newEnemyX, newEnemyY))
-                                healthSystem.TakeDamage(5);
-                        }
+                    else
+                    {
+                        pos.x = newX;
+                        pos.y = newY;
+                        
                     }
                 }
+                buildMap.CheckFloor(newX, newY);
             }
         }
     }

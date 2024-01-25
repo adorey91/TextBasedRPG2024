@@ -9,11 +9,18 @@ namespace Textbased_RPG_AdrianDorey
     internal class BuildMap
     {
         private char[,] mapContent;  // holds the map file
+        private HealthSystem healthSystem;
+
+            public void MapInit(HealthSystem healthSystem)
+        {
+            this.healthSystem = healthSystem;
+        }
 
         public char[,] MapContent
         {
             get { return mapContent; }
         }
+
 
         public void mapInit()   // initializes map from file to mapContent
         {
@@ -88,9 +95,10 @@ namespace Textbased_RPG_AdrianDorey
             return x >= 0 && x < mapContent.GetLength(1) && y >= 0 && y < mapContent.GetLength(0) && mapContent[y, x] != '#' && mapContent[y, x] != '~';
         }
 
-        public bool CheckFloor(int x, int y)
+        public void CheckFloor(int x, int y)
         {
-            return mapContent[y, x] == 'P';
+            if (mapContent[y,x] == 'P')
+                healthSystem.TakeDamage(5);
         }
 
         public void MapColor(char c)    // handles map color

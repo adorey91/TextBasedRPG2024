@@ -20,7 +20,17 @@ namespace Textbased_RPG_AdrianDorey
         public Item money2;
         public Item potion;
         public bool gameOver;
-        
+        public int healAmount = 8;
+
+        public void Init(BuildMap buildMap, Enemy enemy, Item money1, Item money2, Item potion)
+        {
+            this.buildMap = buildMap;
+            this.enemy = enemy;
+            this.money1 = money1;
+            this.money2 = money2;
+            this.potion = potion;
+        }
+
         public Player()
         {
             healthSystem = new HealthSystem();
@@ -37,11 +47,27 @@ namespace Textbased_RPG_AdrianDorey
 
                 int dirx = 0, diry = 0;
 
-                if (input.Key == ConsoleKey.W || input.Key == ConsoleKey.UpArrow) diry = -1;
-                else if (input.Key == ConsoleKey.S || input.Key == ConsoleKey.DownArrow) diry = 1;
-                else if (input.Key == ConsoleKey.A || input.Key == ConsoleKey.LeftArrow) dirx = -1;
-                else if (input.Key == ConsoleKey.D || input.Key == ConsoleKey.RightArrow) dirx = 1;
-                else if (input.Key == ConsoleKey.Spacebar) return; // using for testing, player doesn't move
+                switch (input.Key)
+                {
+                    case ConsoleKey.W:
+                    case ConsoleKey.UpArrow:
+                        diry = -1;
+                        break;
+                    case ConsoleKey.S:
+                    case ConsoleKey.DownArrow:
+                        diry = 1;
+                        break;
+                    case ConsoleKey.A:
+                    case ConsoleKey.LeftArrow:
+                        dirx = -1;
+                        break;
+                    case ConsoleKey.D:
+                    case ConsoleKey.RightArrow:
+                        dirx = 1;
+                        break;
+                    case ConsoleKey.Spacebar:
+                        return; // using for testing, player doesn't move
+                }
 
                 if (dirx != 0 || diry != 0)
                 {
@@ -60,16 +86,15 @@ namespace Textbased_RPG_AdrianDorey
                             money1.TryCollect(newX, newY);
                             money2.TryCollect(newX, newY);
                             potion.TryCollect(newX, newY);
-
-                            if (potion.pickedUp)
-                                healthSystem.Heal(5);
-
-                            if (buildMap.CheckFloor(newX, newY))
-                                healthSystem.TakeDamage(5);
                         }
                     }
                 }
             }
+            buildMap.CheckFloor(pos.x, pos.y);
+
+            if (potion.pickedUp)
+                healthSystem.Heal(healAmount);
+
         }
 
         public bool CheckEnemy(int newX, int newY) 
