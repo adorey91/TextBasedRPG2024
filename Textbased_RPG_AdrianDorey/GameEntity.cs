@@ -14,6 +14,7 @@ namespace Textbased_RPG_AdrianDorey
         public Item potion1;
         public Item potion2;
         public bool attacked;
+        public int potionHeal = 7;
 
         public GameEntity()
         {
@@ -36,9 +37,9 @@ namespace Textbased_RPG_AdrianDorey
             potion1.TryCollect(posX, posY);
             potion2.TryCollect(posX, posY);
             if (potion1.pickedUp)
-                Heal(5);
+                Heal(potionHeal);
             else if (potion2.pickedUp)
-                Heal(5);
+                Heal(potionHeal);
         }
     }
 }
