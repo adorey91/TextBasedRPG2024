@@ -18,10 +18,10 @@ namespace Textbased_RPG_AdrianDorey
         private int newX;
         private int newY;
 
-        public Enemy()
+        public Enemy(Random random)
         {
             healthSystem = new HealthSystem();
-            int randomHealth = new Random().Next(40, 65);
+            int randomHealth = random.Next(40, 65);
             healthSystem.health = randomHealth;
         }
 
@@ -89,9 +89,9 @@ namespace Textbased_RPG_AdrianDorey
                         pos.y = newY;
                     }
                 }
-                if (buildMap.CheckPoisonFloor(newX, newY))
+                if (buildMap.CheckPoisonFloor(pos.x, pos.y))
                     healthSystem.FloorDamage(5);
-                else if (newX == trap.pos.x && newY == trap.pos.y && !trap.collected)
+                else if (pos.x == trap.pos.x && pos.y == trap.pos.y && !trap.collected)
                 {
                     healthSystem.TrapDamage(7);
                     trap.collected = true;

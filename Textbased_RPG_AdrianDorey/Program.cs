@@ -26,8 +26,8 @@ namespace Textbased_RPG_AdrianDorey
             GameLog log = new GameLog();
             Random random = new Random(); // makes sure that the enemies have different health amounts
             Hero = new Player();
-            Badman1 = new Enemy();
-            Badman2 = new Enemy();
+            Badman1 = new Enemy(random);
+            Badman2 = new Enemy(random);
             money1 = new Item();
             money2 = new Item();
             potion1 = new Item();
@@ -70,6 +70,12 @@ namespace Textbased_RPG_AdrianDorey
                 Badman1.EnemyMovement();
                 Badman2.EnemyMovement();
             }
+
+            WriteTitle();
+            hUD.ShowHUD();
+            buildMap.DrawMap(Hero, Badman1, Badman2, money1, money2, potion1, potion2, trap);
+            buildMap.DisplayLegend();
+            log.PrintGameLog();
 
             if (Hero.PlayerDied())
                 Console.WriteLine("Player has died, press any key to exit");
