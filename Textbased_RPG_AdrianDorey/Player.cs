@@ -122,9 +122,14 @@ namespace Textbased_RPG_AdrianDorey
             CollectPotion(newX, newY);
         }
 
-        public bool IsGameOver()
+        public bool PlayerDied()
         {
-            return healthSystem.health == 0;
+            return healthSystem.dead;
+        }
+
+        public bool PlayerWon()
+        {
+            return Badman1.healthSystem.dead && Badman2.healthSystem.dead && money1.collected && money2.collected;
         }
     }
 }

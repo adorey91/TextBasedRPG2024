@@ -45,8 +45,7 @@ namespace Textbased_RPG_AdrianDorey
             log.Init(Hero, Badman1,Badman2,money1,money2, potion1, potion2, trap);
             Hero.Init(buildMap, Badman1, Badman2,money1,money2, potion1, potion2, trap);
             Badman1.Init(buildMap, Hero, trap);
-            Badman2
-                .Init(buildMap, Hero, trap);
+            Badman2.Init(buildMap, Hero, trap);
 
 
             //positions of GameObjects
@@ -60,7 +59,7 @@ namespace Textbased_RPG_AdrianDorey
             trap.pos = new Point2D { x = 25, y = 13 };
 
 
-            while (!PlayerWon() || !PlayerLost())
+            while (!isGameOver())
             {
                 WriteTitle();
                 hUD.ShowHUD();
@@ -70,14 +69,19 @@ namespace Textbased_RPG_AdrianDorey
                 Hero.PlayerMovement();
                 Badman1.EnemyMovement();
                 Badman2.EnemyMovement();
-
             }
 
-            if (PlayerWon())
+            if (Hero.PlayerDied())
                 Console.WriteLine("Player has died, press any key to exit");
             else
                 Console.WriteLine("Player has won! Press any key to exit");
+
             Console.ReadKey();
+        }
+
+        static bool isGameOver()
+        {
+            return Hero.PlayerWon() || Hero.PlayerDied();
         }
 
         static void WriteTitle()
@@ -86,15 +90,6 @@ namespace Textbased_RPG_AdrianDorey
             Console.WriteLine("\x1b[3J");
             Console.WriteLine("Text Based RPG 2024");
             Console.WriteLine();
-        }
-
-        static bool PlayerWon()
-        {
-            return Badman1.healthSystem.dead && Badman1.healthSystem.dead && money1.collected && money2.collected;
-        }
-        static bool PlayerLost()
-        {
-            return Hero.healthSystem.dead;
         }
     }
 }

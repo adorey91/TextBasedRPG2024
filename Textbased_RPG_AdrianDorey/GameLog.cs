@@ -105,13 +105,14 @@ namespace Textbased_RPG_AdrianDorey
         {
             if (potion1.pickedUp || potion2.pickedUp)
             {
-                if (Hero.healthSystem.health < 100)
-                    Console.WriteLine("Player cannot heal anymore");
-                else
-                    Console.WriteLine("Player picked up potion");
+                if(Hero.healthSystem.health < 100)
+                    Console.Write("Player picked up potion");
+                else if (Hero.healthSystem.health >= 100)
+                    Console.Write("Player cannot heal anymore");
 
                 potion1.pickedUp = false;
                 potion2.pickedUp = false;
+                Console.WriteLine();
             }
         }
 
