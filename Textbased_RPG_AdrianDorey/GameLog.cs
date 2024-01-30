@@ -9,19 +9,26 @@ namespace Textbased_RPG_AdrianDorey
 {
     internal class GameLog
     {
-        public Enemy enemy;
-        public Player player;
+        public Enemy Badman1;
+        public Enemy Badman2;
+        public Player Hero;
         public Item money1;
         public Item money2;
-        public Item potion;
+        public Item potion1;
+        public Item potion2;
+        public Item trap;
 
-        public void Init(Player player, Enemy enemy, Item money1, Item money2, Item potion)
+
+        public void Init(Player Hero, Enemy Badman1, Enemy Badman2, Item money1, Item money2, Item potion1, Item potion2, Item trap)
         {
-            this.player = player;
-            this.enemy = enemy;
+            this.Hero = Hero;
+            this.Badman1 = Badman1;
+            this.Badman2 = Badman2;
             this.money1 = money1;
             this.money2 = money2;
-            this.potion = potion;
+            this.potion1 = potion1;
+            this.potion2 = potion2;
+            this.trap = trap;
         }
 
         public void PrintGameLog()
@@ -29,23 +36,59 @@ namespace Textbased_RPG_AdrianDorey
             Console.WriteLine();
             Console.WriteLine("Game Log:");
             LogAttackText();
-            LogEnemyDeathText();
+            LogFloorTrapText();
             LogPickUpText();
+            LogHealingText();
+            LogEnemyDeathText();
             Console.WriteLine();
         }
 
         private void LogAttackText()
         {
-            if (enemy.healthSystem.attacked)
+            if (Badman1.healthSystem.attackedByEnemy)
             {
-                Console.WriteLine("Player attacked enemy");
-                enemy.healthSystem.attacked = false;
+                Console.WriteLine("Player attacked Badman1");
+                Badman1.healthSystem.attackedByEnemy = false;
             }
-            else if (player.healthSystem.attacked)
+            else if (Badman2.healthSystem.attackedByEnemy)
+            {
+                Console.WriteLine("Player attacked Badman2");
+                Badman2.healthSystem.attackedByEnemy = false;
+            }
+            else if (Hero.healthSystem.attackedByEnemy)
             {
                 Console.WriteLine("Enemy attacked player");
-                player.healthSystem.attacked = false;
+                Hero.healthSystem.attackedByEnemy = false;
             }
+        }
+
+        private void LogFloorTrapText()
+        {
+            if (Hero.healthSystem.floorDamage)
+            {
+                Console.WriteLine("Player damaged by poison spill");
+                Hero.healthSystem.floorDamage = false;
+            }
+            else if (Hero.healthSystem.trapDamage)
+            {
+                Console.WriteLine("Player damaged by a trap");
+                trap.collected = true;
+                Hero.healthSystem.trapDamage = false;
+            }
+            else if (Badman1.healthSystem.floorDamage || Badman2.healthSystem.floorDamage)
+            {
+                Console.WriteLine("Enemy damaged by poison spill");
+                Badman1.healthSystem.floorDamage = false;
+                Badman2.healthSystem.floorDamage = false;
+            }
+            else if (Badman1.healthSystem.trapDamage || Badman2.healthSystem.trapDamage)
+            {
+                Console.WriteLine("Enemy damaged by a trap");
+                trap.collected = true;
+                Badman1.healthSystem.trapDamage = false;
+                Badman2.healthSystem.trapDamage = false;
+            }
+
         }
 
         private void LogPickUpText()
@@ -56,23 +99,28 @@ namespace Textbased_RPG_AdrianDorey
                 money1.pickedUp = false;
                 money2.pickedUp = false;
             }
-            else if (potion.pickedUp)
+        }
+
+        private void LogHealingText()
+        {
+            if (potion1.pickedUp || potion2.pickedUp)
             {
-                if (player.healthSystem.health >= 100)
+                if (Hero.healthSystem.health < 100)
                     Console.WriteLine("Player cannot heal anymore");
                 else
-                    Console.WriteLine("Player picked up potion, healed " + player.healAmount);
-                potion.pickedUp = false;
+                    Console.WriteLine("Player picked up potion");
+
+                potion1.pickedUp = false;
+                potion2.pickedUp = false;
             }
         }
 
         private void LogEnemyDeathText()
         {
-            if (enemy.healthSystem.dead)
-            {
-                Console.WriteLine("Enemy died");
-                enemy.healthSystem.dead = false;
-            }
+            if (Badman1.healthSystem.dead)
+                Console.WriteLine("Badman1 died");
+            else if (Badman2.healthSystem.dead)
+                Console.WriteLine("Badman2 died");
         }
     }
 }

@@ -2,92 +2,73 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
-using TextBasedRPG2024;
 
 namespace Textbased_RPG_AdrianDorey
 {
     internal class BuildMap
     {
-        private char[,] mapContent;  // holds the map file
-        private HealthSystem healthSystem;
-
-            public void MapInit(HealthSystem healthSystem)
-        {
-            this.healthSystem = healthSystem;
-        }
+        private char[,] mapContent;
 
         public char[,] MapContent
         {
             get { return mapContent; }
         }
 
-
-        public void mapInit()   // initializes map from file to mapContent
+        public void MapInit() // initializes map from file to map content
         {
             string[] lines = File.ReadAllLines("Map.txt");
-
             mapContent = new char[lines.Length, lines[0].Length];
 
             for (int i = 0; i < lines.Length; i++)
             {
                 for (int j = 0; j < lines[i].Length; j++)
-                {
                     mapContent[i, j] = lines[i][j];
-                }
             }
         }
 
-        public void DrawMap(Player player, Enemy enemy, Item money1, Item money2, Item potion)
+        public void DrawMap(Player Hero, Enemy Badman1, Enemy Badman2, Item money1, Item money2, Item potion1, Item potion2, Item trap)
         {
             for (int i = 0; i < mapContent.GetLength(0); i++)
             {
                 for (int j = 0; j < mapContent.GetLength(1); j++)
                 {
-                    if (i == player.pos.y && j == player.pos.x)
-                    {
-                        MapColor('H');
-                        Console.Write(player.playerChar);
-                        Console.ResetColor();
-                    }
-
-                    else if (i == enemy.pos.y && j == enemy.pos.x && enemy.healthSystem.health > 0)
-                    {
-                        MapColor('E');
-                        Console.Write(enemy.enemyChar);
-                        Console.ResetColor();
-                    }
-                    
-                    else if (i == money1.pos.y && j == money1.pos.x && !money1.collected)
-                    {
-                        MapColor('$');
-                        Console.Write(money1.moneyChar);
-                        Console.ResetColor();
-                    }
-
-                    else if (i == money2.pos.y && j == money2.pos.x && !money2.collected)
-                    {
-                        MapColor('$');
-                        Console.Write(money2.moneyChar);
-                        Console.ResetColor();
-                    }
-
-                    else if (i == potion.pos.y && j == potion.pos.x && !potion.collected)
-                    {
-                        MapColor('L');
-                        Console.Write(potion.potionChar);
-                        Console.ResetColor();
-                    }
-
-                    else
-                    {
-                        MapColor(mapContent[i, j]);
-                        Console.Write(mapContent[i, j]);
-                        Console.ResetColor();
-                    }
+                    char characterToDraw = GetCharacterToDraw(i, j, Hero, Badman1, Badman2, money1, money2, potion1, potion2, trap);
+                    MapColor(characterToDraw);
+                    Console.Write(characterToDraw);
+                    Console.ResetColor();
                 }
                 Console.WriteLine();
             }
             Console.WriteLine();
+        }
+
+        private char GetCharacterToDraw(int i, int j, Player Hero, Enemy Badman1, Enemy Badman2, Item money1, Item money2, Item potion1, Item potion2, Item trap)
+        {
+            if (i == Hero.pos.y && j == Hero.pos.x)
+                return Hero.character;
+
+            if (i == Badman1.pos.y && j == Badman1.pos.x && !Badman1.healthSystem.dead)
+                return Badman1.character;
+
+            if (i == Badman2.pos.y && j == Badman2.pos.x && !Badman2.healthSystem.dead)
+                return Badman2.character;
+
+            if (i == money1.pos.y && j == money1.pos.x && !money1.collected)
+                return money1.moneyChar;
+
+            if (i == money2.pos.y && j == money2.pos.x && !money2.collected)
+                return money2.moneyChar;
+
+            if (i == potion1.pos.y && j == potion1.pos.x && !potion1.collected)
+                return potion1.potionChar;
+
+            if (i == potion2.pos.y && j == potion2.pos.x && !potion2.collected)
+                return potion1.potionChar;
+
+            if (i == trap.pos.y && j == trap.pos.x && !trap.collected)
+                return trap.trapChar;
+            else
+                return mapContent[i, j];
         }
 
         public bool CheckBoundaries(int x, int y) //handles player avoiding boundaries & water
@@ -95,11 +76,11 @@ namespace Textbased_RPG_AdrianDorey
             return x >= 0 && x < mapContent.GetLength(1) && y >= 0 && y < mapContent.GetLength(0) && mapContent[y, x] != '#' && mapContent[y, x] != '~';
         }
 
-        public void CheckFloor(int x, int y)
+        public bool CheckPoisonFloor(int x, int y)
         {
-            if (mapContent[y,x] == 'P')
-                healthSystem.TakeDamage(5);
+            return mapContent[y, x] == 'P';
         }
+        
 
         public void MapColor(char c)    // handles map color
         {
@@ -122,15 +103,19 @@ namespace Textbased_RPG_AdrianDorey
                     Console.BackgroundColor = ConsoleColor.Green;
                     break;
                 case 'E':
-                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.BackgroundColor = ConsoleColor.Black;
                     break;
+                case 'T':
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    break;
+
                 case 'H':
                     Console.ForegroundColor = ConsoleColor.Blue;
                     break;
-                case 'L':
+                case 'δ':
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.BackgroundColor = ConsoleColor.Red;
                     break;
             }
         }
@@ -139,44 +124,22 @@ namespace Textbased_RPG_AdrianDorey
         {
             Console.WriteLine("Map Legend:");
 
-            MapColor('H');
-            Console.Write("H");
-            Console.ResetColor();
-            Console.WriteLine(" = Hero (Player)");
-            Console.ResetColor();
+            DisplaySymbol('H', "Hero (Player)");
+            DisplaySymbol('E', "Enemies");
+            DisplaySymbol('$', "Money");
+            DisplaySymbol('δ', "Potion");
+            DisplaySymbol('T', "Trap");
+            DisplaySymbol('~', "Deep Water");
+            DisplaySymbol('P', "Poison Spill");
+            DisplaySymbol('#', "Walls");
+        }
 
-            MapColor('E');
-            Console.Write("E");
+        private void DisplaySymbol(char symbol, string description)
+        {
+            MapColor(symbol);
+            Console.Write(symbol);
             Console.ResetColor();
-            Console.WriteLine(" = Enemy");
-            Console.ResetColor();
-
-            MapColor('$');
-            Console.Write("$");
-            Console.ResetColor();
-            Console.WriteLine(" = Money");
-            Console.ResetColor();
-
-            MapColor('L');
-            Console.Write("L");
-            Console.ResetColor();
-            Console.WriteLine(" = Potion");
-            Console.ResetColor();
-
-            MapColor('~');
-            Console.Write("~");
-            Console.ResetColor();
-            Console.WriteLine(" = Deep Water");
-
-            MapColor('P');
-            Console.Write("P");
-            Console.ResetColor();
-            Console.WriteLine(" = Poison Spill");
-
-            MapColor('#');
-            Console.Write("#");
-            Console.ResetColor();
-            Console.WriteLine(" = Walls");
+            Console.WriteLine($" = {description}");
         }
     }
 }

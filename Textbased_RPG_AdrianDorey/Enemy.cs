@@ -3,58 +3,57 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TextBasedRPG2024;
 
 namespace Textbased_RPG_AdrianDorey
 {
-    internal class Enemy : GameObject
+    internal class Enemy : GameEntity
     {
         private Random randomMovement = new Random();
-        public char enemyChar = 'E';
-        public HealthSystem healthSystem;
-        public BuildMap buildMap;
-        public Player player;
+        public Player Hero;
+        public Item trap;
+
 
         private int dx;
         private int dy;
         private int newX;
         private int newY;
 
-        public Enemy(Random random)
+        public Enemy()
         {
             healthSystem = new HealthSystem();
-            int randomHealth = random.Next(40, 65);
+            int randomHealth = new Random().Next(40, 65);
             healthSystem.health = randomHealth;
         }
 
-        public void Init(BuildMap buildMap, Player player, Item potion)
+        public void Init(BuildMap buildMap, Player Hero, Item trap)
         {
             this.buildMap = buildMap;
-            this.player = player;
+            this.Hero = Hero;
+            this.trap = trap;
         }
 
         public void AttackPlayer()
         {
-            player.healthSystem.TakeDamage(10);
+            Hero.TakeDamage(10);
         }
 
         public void EnemyMovement()
         {
             if (healthSystem.health != 0)
             {
-                int playerDistance = Math.Abs(pos.x - player.pos.x) + Math.Abs(pos.y - player.pos.y);
+                int playerDistance = Math.Abs(pos.x - Hero.pos.x) + Math.Abs(pos.y - Hero.pos.y);
 
-                if (playerDistance <= 6) //checks if the player is within 6 places
+                if (playerDistance <= 4) //checks if the player is within 6 places
                 {
-                    dx = Math.Sign(player.pos.x - pos.x);
-                    dy = Math.Sign(player.pos.y - pos.y);
+                    dx = Math.Sign(Hero.pos.x - pos.x);
+                    dy = Math.Sign(Hero.pos.y - pos.y);
 
                     newX = pos.x + dx;
                     newY = pos.y + dy;
 
                     if (buildMap.CheckBoundaries(newX, newY))
                     {
-                        if (newX == player.pos.x && newY == player.pos.y)
+                        if (newX == Hero.pos.x && newY == Hero.pos.y)
                             AttackPlayer();
                         else
                         {
@@ -81,16 +80,22 @@ namespace Textbased_RPG_AdrianDorey
                         newX = pos.x + dx;
                         newY = pos.y + dy;
                     }
-                    if (newX == player.pos.x && newY == player.pos.y)
+                    
+                    if (newX == Hero.pos.x && newY == Hero.pos.y)
                             AttackPlayer();
                     else
                     {
                         pos.x = newX;
                         pos.y = newY;
-                        
                     }
                 }
-                buildMap.CheckFloor(newX, newY);
+                if (buildMap.CheckPoisonFloor(newX, newY))
+                    healthSystem.FloorDamage(5);
+                else if (newX == trap.pos.x && newY == trap.pos.y && !trap.collected)
+                {
+                    healthSystem.TrapDamage(7);
+                    trap.collected = true;
+                }
             }
         }
     }

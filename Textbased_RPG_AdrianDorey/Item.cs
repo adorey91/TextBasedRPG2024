@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using TextBasedRPG2024;
 
 namespace Textbased_RPG_AdrianDorey
 {
@@ -9,9 +8,12 @@ namespace Textbased_RPG_AdrianDorey
         public bool collected;  // used for the HUD
         public bool pickedUp;   // used for the game log
         public char moneyChar = '$';
-        public char potionChar = 'H';
+        public char potionChar = 'δ';
+        public char trapChar = 'T';
 
-        public Item()
+        public int potionHeal = 8;
+
+        public Item() 
         {
             collected = false;
             pickedUp = false;

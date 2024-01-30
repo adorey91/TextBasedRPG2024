@@ -4,58 +4,76 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
-using TextBasedRPG2024;
 
 namespace Textbased_RPG_AdrianDorey
 {
     internal class Program
     {
+        static Player Hero;
+        static Enemy Badman1;
+        static Enemy Badman2;
+        static Item money1;
+        static Item money2;
+        static Item potion1;
+        static Item potion2;
+        static Item trap;
+
         static void Main(string[] args)
         {
-            Player player = new Player();
-            Random random = new Random(); // makes sure that the enemies have different health amounts
-            Enemy enemy = new Enemy(random);
-            Item money1 = new Item();
-            Item money2 = new Item();
-            Item potion = new Item();
-            HUD HUD = new HUD();
-            GameLog log = new GameLog();
-            HealthSystem healthSystem = new HealthSystem();
- 
             Console.CursorVisible = false;
             BuildMap buildMap = new BuildMap();
-            buildMap.mapInit();
+            HUD hUD = new HUD();
+            GameLog log = new GameLog();
+            Random random = new Random(); // makes sure that the enemies have different health amounts
+            Hero = new Player();
+            Badman1 = new Enemy();
+            Badman2 = new Enemy();
+            money1 = new Item();
+            money2 = new Item();
+            potion1 = new Item();
+            potion2 = new Item();
+            trap = new Item();
+
+            Hero.character = 'H';
+            Badman1.character = 'E';
+            Badman2.character = 'E';
+
 
             //Initializing
-            player.Init(buildMap, enemy, money1, money2, potion);
-            enemy.Init(buildMap, player, potion);
-            HUD.Init(player, enemy, money1, money2);
-            log.Init(player, enemy, money1, money2, potion);
+            buildMap.MapInit();
+            hUD.Init(Hero,Badman1,Badman2,money1,money2);
+            log.Init(Hero, Badman1,Badman2,money1,money2, potion1, potion2, trap);
+            Hero.Init(buildMap, Badman1, Badman2,money1,money2, potion1, potion2, trap);
+            Badman1.Init(buildMap, Hero, trap);
+            Badman2
+                .Init(buildMap, Hero, trap);
+
 
             //positions of GameObjects
-            player.pos = new Point2D { x = 4, y = 4 };
-            enemy.pos = new Point2D { x = 30, y = 10 };
+            Hero.pos = new Point2D { x = 4, y = 4 };
+            Badman1.pos = new Point2D { x = 4, y = 18 };
+            Badman2.pos = new Point2D { x = 32, y = 8 };
             money1.pos = new Point2D { x = 6, y = 8 };
             money2.pos = new Point2D { x = 30, y = 18 };
-            potion.pos = new Point2D { x = 25, y = 4 };
-            
+            potion1.pos = new Point2D { x = 25, y = 4 };
+            potion2.pos = new Point2D { x = 15, y = 10 };
+            trap.pos = new Point2D { x = 25, y = 13 };
 
-            while (!player.gameOver)
+
+            while (!PlayerWon() || !PlayerLost())
             {
-                if (enemy.healthSystem.health == 0 && money1.collected && money2.collected)
-                    player.gameOver = true;
-                
                 WriteTitle();
-                HUD.ShowHUD();
-                buildMap.DrawMap(player, enemy, money1, money2, potion);
+                hUD.ShowHUD();
+                buildMap.DrawMap(Hero, Badman1, Badman2, money1, money2, potion1, potion2, trap);
                 buildMap.DisplayLegend();
                 log.PrintGameLog();
-                player.PlayerMovement();
-                enemy.EnemyMovement();
-                
+                Hero.PlayerMovement();
+                Badman1.EnemyMovement();
+                Badman2.EnemyMovement();
+
             }
 
-            if (player.healthSystem.health == 0)
+            if (PlayerWon())
                 Console.WriteLine("Player has died, press any key to exit");
             else
                 Console.WriteLine("Player has won! Press any key to exit");
@@ -68,6 +86,15 @@ namespace Textbased_RPG_AdrianDorey
             Console.WriteLine("\x1b[3J");
             Console.WriteLine("Text Based RPG 2024");
             Console.WriteLine();
+        }
+
+        static bool PlayerWon()
+        {
+            return Badman1.healthSystem.dead && Badman1.healthSystem.dead && money1.collected && money2.collected;
+        }
+        static bool PlayerLost()
+        {
+            return Hero.healthSystem.dead;
         }
     }
 }

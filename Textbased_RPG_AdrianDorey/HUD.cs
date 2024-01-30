@@ -9,23 +9,27 @@ namespace Textbased_RPG_AdrianDorey
 {
     internal class HUD
     {
-        public Player player;
-        public Enemy enemy;
+        public Player Hero;
+        public Enemy Badman1;
+        public Enemy Badman2;
         public Item money1;
         public Item money2;
 
-        public void Init(Player player, Enemy enemy, Item money1, Item money2)
+        public void Init(Player Hero, Enemy Badman1, Enemy Badman2, Item money1, Item money2)
         {
-            this.player = player;
-            this.enemy = enemy;
+            this.Hero = Hero;
+            this.Badman1 = Badman1;
+            this.Badman2 = Badman2;
             this.money1 = money1;
             this.money2 = money2;
         }
         
         public void ShowHUD()   // handles hud output
         {
-            Console.WriteLine("Player Health: " + player.healthSystem.health);
-            Console.WriteLine("Enemy0 Health: " + enemy.healthSystem.health);
+            Console.WriteLine("++++++++++++++++++++++++++++");
+            Console.WriteLine("Hero Health: " + Hero.healthSystem.health);
+            Console.WriteLine("Badman1 Health: " + Badman1.healthSystem.health);
+            Console.WriteLine("Badman2 Health: " + Badman2.healthSystem.health);
             Console.Write("Item Picked Up: ");
 
             if (money1.collected == true)
@@ -46,6 +50,7 @@ namespace Textbased_RPG_AdrianDorey
                 Console.ResetColor();
             }
             Console.WriteLine();
+            Console.WriteLine("++++++++++++++++++++++++++++");
             Console.WriteLine();
         }
     }
